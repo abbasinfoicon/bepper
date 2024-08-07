@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.juNRvt {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
