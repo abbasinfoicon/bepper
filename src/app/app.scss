@@ -23,6 +23,21 @@ body {
     @media (max-width: 767px) {
         font-size: 14px;
     }
+
+    &.overflow_body {
+        overflow: hidden;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: rgb(0 0 0 / 80%);
+        }
+    }
 }
 
 /*=====================================================================
