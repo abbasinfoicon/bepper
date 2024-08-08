@@ -2,7 +2,7 @@ import React from 'react'
 
 const Video = () => {
     return (
-        <div className="video mt-2">
+        <div className="video">
             <video className="w-full" controls autoPlay muted loop>
                 <source src="/video.mp4" type="video/mp4" />
             </video>

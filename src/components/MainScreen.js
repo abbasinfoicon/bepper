@@ -49,7 +49,6 @@ const generateCircles = (src, count) => (
 
 const MainScreen = ({ getImage, refScreen }) => {
     const [loading, setLoading] = useState(false);
-    const [scale, setScale] = useState(50);
     const [view, setView] = useState(initialCircleState);
     const [textarea, setTextarea] = useState('');
     const textareaRef = useRef(null);
@@ -69,16 +68,6 @@ const MainScreen = ({ getImage, refScreen }) => {
 
     const handleViewChange = (viewType) => {
         setView({ basic: false, [viewType]: true });
-        clearAllTextareas();
-        document.querySelectorAll('.circle').forEach(circle => {
-            circle.style.transform = '';
-        });
-        setShowGem(false);
-    };
-
-    const resetAll = () => {
-        setScale(50);
-        setView(initialCircleState);
         clearAllTextareas();
         document.querySelectorAll('.circle').forEach(circle => {
             circle.style.transform = '';
@@ -152,7 +141,7 @@ const MainScreen = ({ getImage, refScreen }) => {
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-lg-6">
-                                    <div className="img-full" style={{ transform: `scale(${scale / 100 * 2})` }}>
+                                    <div className="img-full">
 
                                         <div className={`Bord_GD ${view.witBoard ? 'hide' : 'show'}`}>
                                             <div className={`${view.steptoGoal ? 'arrow' : ''} ${view.taBoard ? 'd-none' : 'row'}`}>
@@ -204,27 +193,13 @@ const MainScreen = ({ getImage, refScreen }) => {
                                 </div>
 
                                 <div className="col-lg-6">
-                                    <div className="row mb-2">
-                                        <div className="col-md-8">
+                                    <div className="row">
+                                        <div className="col-md-12">
                                             <Video />
-                                        </div>
-
-                                        <div className="col-md-4">
-                                            <CustomLink />
                                         </div>
                                     </div>
 
                                     <div className="content_fixed">
-                                        <div className="reset-zoom">
-                                            <div className="reset">
-                                                <p onClick={resetAll}>reset <img src="/img/reset.svg" alt="reset" className="img-fluid" /></p>
-                                            </div>
-                                            <div className="zoom">
-                                                <p>zoom</p>
-                                                <input type="range" min="10" max="50" value={scale} onChange={e => setScale(parseInt(e.target.value, 10))} />
-                                            </div>
-                                        </div>
-
                                         <div className="flex">
                                             <ColorGem setColor={setColor} setShowGem={setShowGem} />
 
@@ -238,6 +213,8 @@ const MainScreen = ({ getImage, refScreen }) => {
                                                     ))}
                                                 </ul>
                                             </div>
+
+                                            <CustomLink />
                                         </div>
                                     </div>
                                 </div>
