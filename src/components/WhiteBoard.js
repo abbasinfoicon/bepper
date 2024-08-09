@@ -231,7 +231,7 @@ const WhiteBoard = () => {
             </div>
 
             <div className="right-box">
-                <canvas ref={canvasRef} style={{ background: 'white', border: '4px solid #a9846f' }} />
+                <canvas ref={canvasRef} width={800} height={690} style={{ background: 'white', border: '4px solid #a9846f' }} />
             </div>
         </div>
     )
