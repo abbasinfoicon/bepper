@@ -455,6 +455,10 @@ textarea {
     gap: 10px;
     width: 100%;
 
+    input {
+        font-family: "Playwrite AR", cursive;
+    }
+
     span {
         min-width: 50px;
         font-size: 20px;
@@ -748,9 +752,10 @@ textarea {
     }
 
     .right-box {
-        width: 100%;
-        background: #fff;
-        height: 100%;
-        border: 4px solid #a9846f;
+        position: relative;
+    }
+
+    canvas.upper-canvas {
+        background: transparent !important;
     }
 }
