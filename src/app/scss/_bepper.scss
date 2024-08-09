@@ -463,28 +463,44 @@ textarea {
         min-width: 50px;
         font-size: 20px;
         font-weight: 900;
-        text-align: center;
+        text-align: left;
 
         &.colorChange {
             height: 20px;
             min-width: 20px;
             background: #7c7c7c;
 
-            &.gem_groen {}
+            &.gem_groen {
+                background: #717e34;
+            }
 
-            &.gem_geel {}
+            &.gem_geel {
+                background: #e5c936;
+            }
 
-            &.gem_beige {}
+            &.gem_beige {
+                background: #ad9c61;
+            }
 
-            &.gem_orange {}
+            &.gem_orange {
+                background: #c86c2e;
+            }
 
-            &.gem_black {}
+            &.gem_black {
+                background: #000;
+            }
 
-            &.gem_lichtblauw {}
+            &.gem_lichtblauw {
+                background: #4ab8ff;
+            }
 
-            &.gem_wit {}
+            &.gem_wit {
+                background: #fff;
+            }
 
-            &.gem_donkerblauw {}
+            &.gem_donkerblauw {
+                background: #1c1e52;
+            }
         }
     }
 }
