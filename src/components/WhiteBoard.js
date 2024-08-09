@@ -18,13 +18,33 @@ const WhiteBoard = () => {
     const [canvas, setCanvas] = useState(null);
     const [activeTool, setActiveTool] = useState('');
     const [activeSubTool, setActiveSubTool] = useState('');
+    const [undoStack, setUndoStack] = useState([]);
+    const [redoStack, setRedoStack] = useState([]);
+
+
+
+    const handleTools = (tool) => {
+        setActiveTool(activeTool === tool ? '' : tool);
+    };
+    const handleSubTools = (parent, value) => {
+        setActiveTool(parent);
+        setActiveSubTool(value);
+    }
 
     useEffect(() => {
+        // Initialize Fabric.js canvas
         const fabricCanvas = new fabric.Canvas(canvasRef.current, {
             isDrawingMode: false,
         });
         console.log('Canvas initialized:', fabricCanvas);
         setCanvas(fabricCanvas);
+
+        // Cleanup function to dispose of the canvas instance
+        return () => {
+            if (fabricCanvas) {
+                fabricCanvas.dispose();
+            }
+        };
     }, []);
 
     useEffect(() => {
@@ -32,31 +52,27 @@ const WhiteBoard = () => {
 
         // Reset canvas drawing mode for each tool
         canvas.isDrawingMode = false;
+
         console.log('Active tool:', activeTool);
         console.log('Canvas state before tool activation:', canvas);
 
         switch (activeTool) {
             case 'penTool':
-                // Set drawing mode explicitly
                 canvas.isDrawingMode = true;
-
-                if (canvas.freeDrawingBrush) {
-                    console.log('Free drawing brush available:', canvas.freeDrawingBrush);
-                    canvas.freeDrawingBrush.width = 2;
-                    canvas.freeDrawingBrush.color = 'black';
-                } else {
-                    console.error('Free drawing brush is not available');
+                if (!canvas.freeDrawingBrush) {
+                    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
                 }
+                canvas.freeDrawingBrush.width = 2;
+                canvas.freeDrawingBrush.color = 'black';
                 break;
 
             case 'eraser':
                 canvas.isDrawingMode = true;
-                if (canvas.freeDrawingBrush) {
-                    canvas.freeDrawingBrush.width = 10;
-                    canvas.freeDrawingBrush.color = 'white';
-                } else {
-                    console.error('Free drawing brush is not available');
+                if (!canvas.freeDrawingBrush) {
+                    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
                 }
+                canvas.freeDrawingBrush.width = 10;
+                canvas.freeDrawingBrush.color = 'white';
                 break;
 
             case 'circle':
@@ -80,15 +96,21 @@ const WhiteBoard = () => {
         }
     }, [activeTool, canvas]);
 
-    const handleTools = (tool) => {
-        setActiveTool(activeTool === tool ? '' : tool);
-        setActiveSubTool('');
-    };
+    useEffect(() => {
+        if (canvas) {
+            canvas.on('object:added', () => {
+                addActionToUndoStack('add', canvas.getActiveObject());
+            });
 
-    const handleSubTools = (parent, value) => {
-        setActiveTool(parent);
-        setActiveSubTool(value);
-    }
+            canvas.on('object:removed', (e) => {
+                addActionToUndoStack('remove', e.target);
+            });
+
+            canvas.on('path:created', (e) => {
+                addActionToUndoStack('add', e.path);
+            });
+        }
+    }, [canvas]);
 
     const addCircle = () => {
         const circle = new fabric.Circle({
@@ -99,6 +121,7 @@ const WhiteBoard = () => {
             top: 100
         });
         canvas.add(circle);
+        addActionToUndoStack('add', circle);
     };
 
     const addSquare = () => {
@@ -111,6 +134,7 @@ const WhiteBoard = () => {
             top: 100
         });
         canvas.add(square);
+        addActionToUndoStack('add', square);
     };
 
     const addTriangle = () => {
@@ -123,6 +147,7 @@ const WhiteBoard = () => {
             top: 100
         });
         canvas.add(triangle);
+        addActionToUndoStack('add', triangle);
     };
 
     const addArrow = () => {
@@ -143,23 +168,64 @@ const WhiteBoard = () => {
             top: 100
         });
         canvas.add(arrow);
+        addActionToUndoStack('add', arrow);
+    };
+
+    const addActionToUndoStack = (action, object) => {
+        setUndoStack(prev => [...prev, { action, object }]);
+        setRedoStack([]); // Clear redo stack on new action
     };
 
     const handleUndo = () => {
-        const objects = canvas.getObjects();
-        if (objects.length > 0) {
-            const last = objects[objects.length - 1];
-            canvas.remove(last);
-        }
+        setUndoStack(prevUndoStack => {
+            const undoStackCopy = [...prevUndoStack];
+            const lastAction = undoStackCopy.pop(); // Get the last action from the stack
+
+            if (lastAction) {
+                const { action, object } = lastAction;
+
+                // Perform the undo action
+                if (action === 'add') {
+                    canvas.remove(object);
+                } else if (action === 'remove') {
+                    canvas.add(object);
+                }
+
+                // Update the redo stack
+                setRedoStack(prevRedoStack => [...prevRedoStack, lastAction]);
+            }
+
+            return undoStackCopy; // Return the updated undo stack
+        });
     };
 
     const handleRedo = () => {
-        // Implement redo functionality if required (requires custom state management)
-        console.log('Redo action');
+        setRedoStack(prevRedoStack => {
+            const redoStackCopy = [...prevRedoStack];
+            const lastRedo = redoStackCopy.pop(); // Get the last redo action from the stack
+
+            if (lastRedo) {
+                const { action, object } = lastRedo;
+
+                // Perform the redo action
+                if (action === 'add') {
+                    canvas.add(object);
+                } else if (action === 'remove') {
+                    canvas.remove(object);
+                }
+
+                // Update the undo stack
+                setUndoStack(prevUndoStack => [...prevUndoStack, lastRedo]);
+            }
+
+            return redoStackCopy; // Return the updated redo stack
+        });
     };
 
     const handleDelete = () => {
         canvas.clear();
+        setUndoStack([]);
+        setRedoStack([]);
     };
 
     return (
