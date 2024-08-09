@@ -121,9 +121,9 @@ const MainScreen = ({ getImage, refScreen }) => {
                                                 <div className="typeText">
                                                     <div className="textEditor"><span>M:</span> <input type="text" name="m" value={inputData.m} onChange={handleInput} id="" placeholder="Type here" /></div>
                                                     <div className="textEditor"><span>A:</span> <input type="text" name="a" value={inputData.a} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    <div className={`textEditor ${view.taBoard ? 'opacity-0' : ''}`}><span>W 1:</span> <input type="text" name="w1" value={inputData.w1} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    <div className={`textEditor ${view.taBoard ? 'opacity-0' : ''}`}><span>W 2:</span> <input type="text" name="w2" value={inputData.w2} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    <div className={`textEditor ${view.meTime || view.taBoard ? 'opacity-0' : ''}`}><span>W 3:</span> <input type="text" name="w3" value={inputData.w3} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                    <div className={`textEditor ${view.taBoard ? 'opacity-0' : ''}`}><span>W 1:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w1" value={inputData.w1} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                    <div className={`textEditor ${view.taBoard ? 'opacity-0' : ''}`}><span>W 2:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w2" value={inputData.w2} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                    <div className={`textEditor ${view.meTime || view.taBoard ? 'opacity-0' : ''}`}><span>W 3:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w3" value={inputData.w3} onChange={handleInput} id="" placeholder="Type here" /></div>
                                                 </div>
                                             </div>
 

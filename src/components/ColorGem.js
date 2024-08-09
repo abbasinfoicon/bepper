@@ -2,14 +2,14 @@
 import React from 'react'
 
 const colors = [
-    "gem_groen",
-    "gem_geel",
-    "gem_beige",
     "gem_orange",
-    "gem_black",
+    "gem_beige",
+    "gem_geel",
+    "gem_groen",
+    "gem_donkerblauw",
     "gem_lichtblauw",
     "gem_wit",
-    "gem_donkerblauw",
+    "gem_black",
 ];
 
 const ColorGem = ({ setColor, setShowGem }) => {

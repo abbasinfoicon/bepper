@@ -21,11 +21,13 @@ const WhiteBoard = () => {
     const [undoStack, setUndoStack] = useState([]);
     const [redoStack, setRedoStack] = useState([]);
 
-
-
     const handleTools = (tool) => {
         setActiveTool(activeTool === tool ? '' : tool);
     };
+    const handleSubTools = (parent, value) => {
+        setActiveTool(parent);
+        setActiveSubTool(value);
+    }
 
     useEffect(() => {
         // Initialize Fabric.js canvas
@@ -173,49 +175,11 @@ const WhiteBoard = () => {
     };
 
     const handleUndo = () => {
-        setUndoStack(prevUndoStack => {
-            const undoStackCopy = [...prevUndoStack];
-            const lastAction = undoStackCopy.pop(); // Get the last action from the stack
-
-            if (lastAction) {
-                const { action, object } = lastAction;
-
-                // Perform the undo action
-                if (action === 'add') {
-                    canvas.remove(object);
-                } else if (action === 'remove') {
-                    canvas.add(object);
-                }
-
-                // Update the redo stack
-                setRedoStack(prevRedoStack => [...prevRedoStack, lastAction]);
-            }
-
-            return undoStackCopy; // Return the updated undo stack
-        });
+        console.log("UNDO");
     };
 
     const handleRedo = () => {
-        setRedoStack(prevRedoStack => {
-            const redoStackCopy = [...prevRedoStack];
-            const lastRedo = redoStackCopy.pop(); // Get the last redo action from the stack
-
-            if (lastRedo) {
-                const { action, object } = lastRedo;
-
-                // Perform the redo action
-                if (action === 'add') {
-                    canvas.add(object);
-                } else if (action === 'remove') {
-                    canvas.remove(object);
-                }
-
-                // Update the undo stack
-                setUndoStack(prevUndoStack => [...prevUndoStack, lastRedo]);
-            }
-
-            return redoStackCopy; // Return the updated redo stack
-        });
+        console.log("REDO");
     };
 
     const handleDelete = () => {
@@ -229,12 +193,32 @@ const WhiteBoard = () => {
             <div className="left-tool">
                 <ul className="toolbar">
                     <li><button className={`${activeTool === 'locator' ? 'active' : ''}`} onClick={() => handleTools('locator')}><CiLocationArrow1 /></button></li>
-                    <li><button className={`${activeTool === 'penTool' ? 'active' : ''}`} onClick={() => handleTools('penTool')}><GoPencil /></button></li>
-                    <li><button className={`${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => handleTools('eraser')}><BiEraser /></button></li>
-                    <li><button className={`${activeTool === 'circle' ? 'active' : ''}`} onClick={() => handleTools('circle')}><GiCircle /></button></li>
-                    <li><button className={`${activeTool === 'square' ? 'active' : ''}`} onClick={() => handleTools('square')}><BsSquare /></button></li>
-                    <li><button className={`${activeTool === 'triangle' ? 'active' : ''}`} onClick={() => handleTools('triangle')}><IoTriangleOutline /></button></li>
-                    <li><button className={`${activeTool === 'arrow' ? 'active' : ''}`} onClick={() => handleTools('arrow')}><PiArrowFatRightLight /></button></li>
+                    <li><button className={`${activeTool === 'penTool' ? 'active' : ''}`} onClick={() => handleTools('penTool')}><GoPencil /></button>
+                        <ul className={`toolbar-sub ${activeTool === 'penTool' ? 'show' : 'hide'}`}>
+                            <li><button className={`${activeSubTool === 'pencil' ? 'active' : ''}`} onClick={() => handleSubTools('penTool', 'pencil')}><GoPencil /></button></li>
+                            <li><button className={`${activeSubTool === 'pencil2' ? 'active' : ''}`} onClick={() => handleSubTools('penTool', 'pencil2')}><BsPencil /></button></li>
+                            <li><button className={`${activeSubTool === 'eraser' ? 'active' : ''}`} onClick={() => handleSubTools('penTool', 'eraser')}><BiEraser /></button></li>
+                            <li><button className={`${activeSubTool === 'border' ? 'active' : ''}`} onClick={() => handleSubTools('penTool', 'border')}><RxBorderWidth /></button></li>
+                            <li><button className={`${activeSubTool === 'color' ? 'active' : ''}`} onClick={() => handleSubTools('penTool', 'color')}><BiSolidSquareRounded /></button></li>
+                            <li><button className={`${activeSubTool === 'colorpicker' ? 'active' : ''}`} onClick={() => handleSubTools('penTool', 'colorpicker')}><CgColorPicker /></button></li>
+                        </ul>
+                    </li>
+                    <li><button className={`${activeTool === 'shapeTool' ? 'active' : ''}`} onClick={() => handleTools('shapeTool')}><IoShapesOutline /></button>
+                        <ul className={`toolbar-sub ${activeTool === 'shapeTool' ? 'show' : 'hide'}`}>
+                            <li><button className={`${activeSubTool === 'circle' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'circle')}><GiCircle /></button></li>
+                            <li><button className={`${activeSubTool === 'square' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'square')}><BsSquare /></button></li>
+                            <li><button className={`${activeSubTool === 'arrow2' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'arrow2')}><PiArrowFatRightLight /></button></li>
+                            <li><button className={`${activeSubTool === 'rounded' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'rounded')}><TbSquareRounded /></button></li>
+                            <li><button className={`${activeSubTool === 'triangle' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'triangle')}><IoTriangleOutline /></button></li>
+                            <li><button className={`${activeSubTool === 'pentagon' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'pentagon')}><BsPentagon /></button></li>
+                            <li><button className={`${activeSubTool === 'hexagon' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'hexagon')}><BsHexagon /></button></li>
+                            <li><button className={`${activeSubTool === 'star' ? 'active' : ''}`} onClick={() => handleSubTools('shapeTool', 'star')}><PiStarLight /></button></li>
+                        </ul>
+                    </li>
+                    <li><button className={`${activeTool === 'line' ? 'active' : ''}`} onClick={() => handleTools('line')}><IoAnalyticsOutline /></button></li>
+                    <li><button className={`${activeTool === 'text' ? 'active' : ''}`} onClick={() => handleTools('text')}><RxText /></button></li>
+                    <li><button className={`${activeTool === 'doc' ? 'active' : ''}`} onClick={() => handleTools('doc')}><IoDocumentOutline /></button></li>
+                    <li><button className={`${activeTool === 'img' ? 'active' : ''}`} onClick={() => handleTools('img')}><PiImage /></button></li>
                 </ul>
 
                 <div className="backUndo">

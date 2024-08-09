@@ -464,6 +464,28 @@ textarea {
         font-size: 20px;
         font-weight: 900;
         text-align: center;
+
+        &.colorChange {
+            height: 20px;
+            min-width: 20px;
+            background: #7c7c7c;
+
+            &.gem_groen {}
+
+            &.gem_geel {}
+
+            &.gem_beige {}
+
+            &.gem_orange {}
+
+            &.gem_black {}
+
+            &.gem_lichtblauw {}
+
+            &.gem_wit {}
+
+            &.gem_donkerblauw {}
+        }
     }
 }
 
@@ -754,16 +776,6 @@ textarea {
     .right-box {
         position: relative;
         z-index: 99;
-
-        canvas {
-            width: 800px !important;
-            height: 690px !important;
-
-            @media (max-width: 1440px) {
-                width: 530px !important;
-                height: 570px !important;
-            }
-        }
     }
 
     canvas.upper-canvas {

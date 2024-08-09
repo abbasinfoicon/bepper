@@ -75,7 +75,10 @@
 
     &_fixed {
         background-color: rgb(251 244 239/0.7);
-        padding: 10px 25px 0;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-bottom: 0;
+        padding-right: 0;
 
         p {
             font-size: 15px;
