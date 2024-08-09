@@ -177,49 +177,11 @@ const WhiteBoard = () => {
     };
 
     const handleUndo = () => {
-        setUndoStack(prevUndoStack => {
-            const undoStackCopy = [...prevUndoStack];
-            const lastAction = undoStackCopy.pop(); // Get the last action from the stack
-
-            if (lastAction) {
-                const { action, object } = lastAction;
-
-                // Perform the undo action
-                if (action === 'add') {
-                    canvas.remove(object);
-                } else if (action === 'remove') {
-                    canvas.add(object);
-                }
-
-                // Update the redo stack
-                setRedoStack(prevRedoStack => [...prevRedoStack, lastAction]);
-            }
-
-            return undoStackCopy; // Return the updated undo stack
-        });
+        console.log("undo")
     };
 
     const handleRedo = () => {
-        setRedoStack(prevRedoStack => {
-            const redoStackCopy = [...prevRedoStack];
-            const lastRedo = redoStackCopy.pop(); // Get the last redo action from the stack
-
-            if (lastRedo) {
-                const { action, object } = lastRedo;
-
-                // Perform the redo action
-                if (action === 'add') {
-                    canvas.add(object);
-                } else if (action === 'remove') {
-                    canvas.remove(object);
-                }
-
-                // Update the undo stack
-                setUndoStack(prevUndoStack => [...prevUndoStack, lastRedo]);
-            }
-
-            return redoStackCopy; // Return the updated redo stack
-        });
+        console.log("redo")
     };
 
     const handleDelete = () => {
