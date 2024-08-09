@@ -753,6 +753,17 @@ textarea {
 
     .right-box {
         position: relative;
+        z-index: 99;
+
+        canvas {
+            width: 800px !important;
+            height: 690px !important;
+
+            @media (max-width: 1440px) {
+                width: 530px !important;
+                height: 570px !important;
+            }
+        }
     }
 
     canvas.upper-canvas {
