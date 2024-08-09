@@ -10,6 +10,7 @@ import TABoard from "@/components/TABoard";
 import CircleTextArea from "@/components/CircleTextArea";
 import ColorGem from "@/components/ColorGem";
 import Moveable from "react-moveable";
+import { GiStarShuriken } from "react-icons/gi";
 
 const circleImageSources = {
     gem_orange: "/img/gem_orange.png",
@@ -140,7 +141,7 @@ const MainScreen = ({ getImage, refScreen }) => {
 
                         <div className="container-fluid">
                             <div className="row">
-                                <div className="col-lg-6">
+                                <div className="col-lg-7">
                                     <div className="img-full">
 
                                         <div className={`Bord_GD ${view.witBoard ? 'hide' : 'show'}`}>
@@ -192,7 +193,7 @@ const MainScreen = ({ getImage, refScreen }) => {
                                     </div>
                                 </div>
 
-                                <div className="col-lg-6">
+                                <div className="col-lg-5">
                                     <div className="row">
                                         <div className="col-md-12">
                                             <Video />
@@ -208,7 +209,7 @@ const MainScreen = ({ getImage, refScreen }) => {
                                                 <ul>
                                                     {viewTypes.map(({ type, label }) => (
                                                         <li key={type} className={`undo ${view[type] ? 'active' : ''}`}>
-                                                            <button onClick={() => handleViewChange(type)}>&#11212; {label}</button>
+                                                            <button className="flex items-center gap-1" onClick={() => handleViewChange(type)}><GiStarShuriken /> {label}</button>
                                                         </li>
                                                     ))}
                                                 </ul>
