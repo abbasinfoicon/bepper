@@ -67,7 +67,7 @@ export default function Home() {
   };
 
   if (loading) {
-    return <div className="juNRvt"><span class="loader"> </span></div>;
+    return <div className="juNRvt"><span className="loader"> </span></div>;
   }
 
   return (

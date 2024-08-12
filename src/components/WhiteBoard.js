@@ -15,6 +15,7 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 
 const WhiteBoard = () => {
     const canvasRef = useRef(null);
+    const fabricCanvasRef = useRef(null);
     const [canvas, setCanvas] = useState(null);
     const [activeTool, setActiveTool] = useState('');
     const [activeSubTool, setActiveSubTool] = useState('');
@@ -30,20 +31,33 @@ const WhiteBoard = () => {
     }
 
     useEffect(() => {
-        // Initialize Fabric.js canvas
-        const fabricCanvas = new fabric.Canvas(canvasRef.current, {
-            isDrawingMode: false,
-        });
-        console.log('Canvas initialized:', fabricCanvas);
-        setCanvas(fabricCanvas);
+        const resizeCanvas = () => {
+            if (fabricCanvasRef.current) {
+                const container = canvasRef.current.parentNode;
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                fabricCanvasRef.current.setWidth(width);
+                fabricCanvasRef.current.setHeight(height);
+                fabricCanvasRef.current.calcOffset();
+            }
+        };
 
-        // Cleanup function to dispose of the canvas instance
+        const observer = new ResizeObserver(resizeCanvas);
+        observer.observe(canvasRef.current.parentNode);
+
         return () => {
-            if (fabricCanvas) {
-                fabricCanvas.dispose();
+            observer.disconnect();
+            if (fabricCanvasRef.current) {
+                fabricCanvasRef.current.dispose();
             }
         };
     }, []);
+
+    useEffect(() => {
+        if (fabricCanvasRef.current) {
+            console.log("Fabric.js canvas initialized:", fabricCanvasRef.current);
+        }
+    }, [fabricCanvasRef]);
 
     useEffect(() => {
         if (!canvas) return;
@@ -189,7 +203,7 @@ const WhiteBoard = () => {
     };
 
     return (
-        <div className="flex">
+        <div className="flex p-4">
             <div className="left-tool">
                 <ul className="toolbar">
                     <li><button className={`${activeTool === 'locator' ? 'active' : ''}`} onClick={() => handleTools('locator')}><CiLocationArrow1 /></button></li>
@@ -231,7 +245,7 @@ const WhiteBoard = () => {
             </div>
 
             <div className="right-box">
-                <canvas ref={canvasRef} width={800} height={690} style={{ background: 'white', border: '4px solid #a9846f' }} />
+                <canvas ref={canvasRef} style={{ height: '100%', width: '100%' }} className='bg-white'></canvas>
             </div>
         </div>
     )
