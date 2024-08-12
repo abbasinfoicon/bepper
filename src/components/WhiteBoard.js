@@ -15,7 +15,6 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 
 const WhiteBoard = () => {
     const canvasRef = useRef(null);
-    const fabricCanvasRef = useRef(null);
     const [canvas, setCanvas] = useState(null);
     const [activeTool, setActiveTool] = useState('');
     const [activeSubTool, setActiveSubTool] = useState('');
@@ -31,33 +30,30 @@ const WhiteBoard = () => {
     }
 
     useEffect(() => {
-        const resizeCanvas = () => {
-            if (fabricCanvasRef.current) {
-                const container = canvasRef.current.parentNode;
-                const width = container.clientWidth;
-                const height = container.clientHeight;
-                fabricCanvasRef.current.setWidth(width);
-                fabricCanvasRef.current.setHeight(height);
-                fabricCanvasRef.current.calcOffset();
-            }
-        };
+        if (canvasRef.current) {
+            const fabricCanvas = new fabric.Canvas(canvasRef.current);
+            fabricCanvas.setWidth(canvasRef.current.parentNode.clientWidth);
+            fabricCanvas.setHeight(canvasRef.current.parentNode.clientHeight);
+            setCanvas(fabricCanvas);
 
-        const observer = new ResizeObserver(resizeCanvas);
-        observer.observe(canvasRef.current.parentNode);
+            const resizeCanvas = () => {
+                fabricCanvas.setWidth(canvasRef.current.parentNode.clientWidth);
+                fabricCanvas.setHeight(canvasRef.current.parentNode.clientHeight);
+                fabricCanvas.calcOffset();
+            };
 
-        return () => {
-            observer.disconnect();
-            if (fabricCanvasRef.current) {
-                fabricCanvasRef.current.dispose();
-            }
-        };
-    }, []);
+            const observer = new ResizeObserver(() => {
+                resizeCanvas();
+            });
+            observer.observe(canvasRef.current.parentNode);
 
-    useEffect(() => {
-        if (fabricCanvasRef.current) {
-            console.log("Fabric.js canvas initialized:", fabricCanvasRef.current);
+            // Cleanup on unmount
+            return () => {
+                observer.disconnect();
+                fabricCanvas.dispose();
+            };
         }
-    }, [fabricCanvasRef]);
+    }, []);
 
     useEffect(() => {
         if (!canvas) return;
