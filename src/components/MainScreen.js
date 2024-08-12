@@ -1,8 +1,7 @@
 'use client'
 import ModalInfo from "@/components/ModalInfo";
 import Link from "next/link";
-import { useState, useRef } from "react";
-import { Circles } from "react-loader-spinner";
+import { useState, useRef, useEffect } from "react";
 import WhiteBoard from "@/components/WhiteBoard";
 import CustomLink from "@/components/CustomLink";
 import Video from "@/components/Video";
@@ -31,12 +30,20 @@ const initialCircleState = {
     witBoard: false,
 };
 
-const viewTypes = [
+const viewTypesLarge = [
     { type: 'basic', label: 'Bepper Balance Basic' },
     { type: 'meTime', label: 'Me-in-the-middle' },
     { type: 'steptoGoal', label: 'Steps to Goal' },
     { type: 'taBoard', label: 'Transactional Analysis' },
     { type: 'witBoard', label: 'White Board' },
+];
+
+const viewTypesSmall = [
+    { type: 'basic', label: 'Basic' },
+    { type: 'meTime', label: 'Me Item' },
+    { type: 'steptoGoal', label: 'Steps' },
+    { type: 'taBoard', label: 'TA' },
+    { type: 'witBoard', label: 'WhiteBoard' },
 ];
 
 const generateCircles = (src, count) => (
@@ -49,15 +56,24 @@ const generateCircles = (src, count) => (
 );
 
 const MainScreen = ({ getImage, refScreen }) => {
-    const [loading, setLoading] = useState(false);
     const [view, setView] = useState(initialCircleState);
     const [textarea, setTextarea] = useState('');
     const textareaRef = useRef(null);
     const [color, setColor] = useState('gem_groen');
     const [showGem, setShowGem] = useState(false);
     const [inputData, setInputData] = useState({ m: "", a: "", w1: "", w2: "", w3: "" });
+    const [viewTypes, setViewTypes] = useState(viewTypesLarge);
 
     const ref = useRef(null)
+
+    useEffect(() => {
+        const screenWidth = window.innerWidth;
+        if (screenWidth <= 1440) {
+            setViewTypes(viewTypesSmall);
+        } else {
+            setViewTypes(viewTypesLarge);
+        }
+    }, []);
 
     const handleInput = (e) => {
         setInputData({ ...inputData, [e.target.name]: e.target.value });
@@ -85,60 +101,11 @@ const MainScreen = ({ getImage, refScreen }) => {
         });
     };
 
-    if (loading) {
-        return <Circles
-            height="80"
-            width="80"
-            color="#4fa94d"
-            ariaLabel="circles-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-        />;
-    }
-
     return (
         <main className="main">
             <div className="main-wrapper">
-                <div className="sidebar">
-                    <div className="sidebar_left">
-                        <ul>
-                            <li><Link href='/'><img src="/img/live.png" alt="live" className="img-fluid" /></Link></li>
-                            <li><Link href='/'><img src="/img/microphone.png" alt="microphone" className="img-fluid" /></Link></li>
-                            <li><button onClick={getImage}><img src="/img/camera.png" alt="microphone" className="img-fluid" /></button></li>
-                        </ul>
-                        <button className='infoicon' onClick={handleShow}><img src="/img/info-white.svg" alt="info" className="img-fluid" /></button>
-                    </div>
-                </div>
-
                 <div className="main-wrapper-content" style={{ backgroundImage: `url(/img/wood-bg.jpg)` }} ref={refScreen}>
                     <div className="content_editable">
-                        <div className="container-fluid">
-                            <div className="row">
-                                <div className="col-lg-12">
-                                    <div className="header-top">
-                                        <div className="row">
-                                            <div className="col-md-10">
-                                                <div className="typeText">
-                                                    <div className="textEditor"><span>M:</span> <input type="text" name="m" value={inputData.m} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    <div className="textEditor"><span>A:</span> <input type="text" name="a" value={inputData.a} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    <div className={`textEditor ${view.taBoard ? 'opacity-0' : ''}`}><span>W 1:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w1" value={inputData.w1} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    <div className={`textEditor ${view.taBoard ? 'opacity-0' : ''}`}><span>W 2:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w2" value={inputData.w2} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    <div className={`textEditor ${view.meTime || view.taBoard ? 'opacity-0' : ''}`}><span>W 3:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w3" value={inputData.w3} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                </div>
-                                            </div>
-
-                                            <div className="col-md-2 text-right">
-                                                <div className="logo">
-                                                    <Link href='/' ><img src="/img/logo.png" alt="" className="img-fluid m-auto" /></Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-lg-7">
@@ -193,34 +160,67 @@ const MainScreen = ({ getImage, refScreen }) => {
                                     </div>
                                 </div>
 
-                                <div className="col-lg-5">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <Video />
-                                        </div>
-                                    </div>
+                                <div className="col-lg-5 scroller_right">
+                                    <div className="">
+                                        <div className="header-top">
+                                            <div className="row items-center">
+                                                <div className="col-md-10">
+                                                    <div className="typeText">
+                                                        <div className="textEditor"><span>M:</span> <input type="text" name="m" value={inputData.m} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                        <div className="textEditor"><span>A:</span> <input type="text" name="a" value={inputData.a} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                        <div className={`textEditor ${view.taBoard ? 'd-none' : ''}`}><span>W 1:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w1" value={inputData.w1} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                        <div className={`textEditor ${view.taBoard ? 'd-none' : ''}`}><span>W 2:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w2" value={inputData.w2} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                        <div className={`textEditor ${view.meTime || view.taBoard ? 'd-none' : ''}`}><span>W 3:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w3" value={inputData.w3} onChange={handleInput} id="" placeholder="Type here" /></div>
+                                                    </div>
+                                                </div>
 
-                                    <div className="content_fixed">
-                                        <div className="flex">
-                                            <ColorGem setColor={setColor} setShowGem={setShowGem} />
-
-                                            <div className="bepper-link">
-                                                <p>Select Bepper Balance Board</p>
-                                                <ul>
-                                                    {viewTypes.map(({ type, label }) => (
-                                                        <li key={type} className={`undo ${view[type] ? 'active' : ''}`}>
-                                                            <button className="flex items-center gap-1" onClick={() => handleViewChange(type)}><GiStarShuriken /> {label}</button>
-                                                        </li>
-                                                    ))}
-                                                </ul>
+                                                <div className="col-md-2 text-right">
+                                                    <div className="logo">
+                                                        <Link href='/' ><img src="/img/logo.png" alt="" className="img-fluid m-auto" /></Link>
+                                                    </div>
+                                                </div>
                                             </div>
+                                        </div>
 
-                                            <CustomLink />
+                                        <div className="row">
+                                            <div className="col-md-12">
+                                                <Video />
+                                            </div>
+                                        </div>
+
+                                        <div className="content_fixed">
+                                            <div className="flex">
+                                                <ColorGem setColor={setColor} setShowGem={setShowGem} />
+
+                                                <div className="bepper-link">
+                                                    <p>Select <span className="noneLaptop">&nbsp;Bepper Balance&nbsp;</span> Board</p>
+                                                    <ul>
+                                                        {viewTypes.map(({ type, label }) => (
+                                                            <li key={type} className={`undo ${view[type] ? 'active' : ''}`}>
+                                                                <button className="flex items-center gap-1" onClick={() => handleViewChange(type)}><GiStarShuriken /> {label}</button>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+
+                                                <CustomLink />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div className="sidebar">
+                    <div className="sidebar_left">
+                        <ul>
+                            <li><Link href='/'><img src="/img/live.png" alt="live" className="img-fluid" /></Link></li>
+                            <li><Link href='/'><img src="/img/microphone.png" alt="microphone" className="img-fluid" /></Link></li>
+                            <li><button onClick={getImage}><img src="/img/camera.png" alt="microphone" className="img-fluid" /></button></li>
+                        </ul>
+                        <button className='infoicon' onClick={handleShow}><img src="/img/info-white.svg" alt="info" className="img-fluid" /></button>
                     </div>
                 </div>
 

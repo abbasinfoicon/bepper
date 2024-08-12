@@ -1,5 +1,5 @@
 'use client'
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScreenCapture } from 'react-screen-capture';
 import html2canvas from "html2canvas";
 import MainScreen from "@/components/MainScreen";
@@ -8,9 +8,24 @@ import { RiCloseLine } from "react-icons/ri";
 import { FaDownload } from "react-icons/fa";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
   const [screenCapture, setScreenCapture] = useState('');
   const ref = useRef(null)
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    const handleLoad = () => setLoading(false);
+
+    if (document.readyState === 'complete') {
+      setLoading(false);
+    } else {
+      window.addEventListener('load', handleLoad);
+    }
+
+    return () => {
+      window.removeEventListener('load', handleLoad);
+    };
+  }, []);
 
   const handleScreenCapture = (screenCapture) => {
     setScreenCapture(screenCapture);
@@ -50,6 +65,10 @@ export default function Home() {
     setImage(null);
     document.body.classList.remove('overflow_body');
   };
+
+  if (loading) {
+    return <div className="juNRvt"><span class="loader"> </span></div>;
+  }
 
   return (
     <main className="main">

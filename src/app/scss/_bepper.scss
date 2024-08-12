@@ -186,7 +186,7 @@
     width: 100%;
     margin: 0 auto;
     position: relative;
-    padding: 20px 12% 0;
+    padding: 50px 12% 0;
 
     &.hide {
         display: none;
@@ -194,10 +194,6 @@
 
     &.show {
         display: block;
-    }
-
-    @media (max-width: 1440px) {
-        padding: 20px;
     }
 
     &.bg-border {
@@ -303,6 +299,7 @@
 
             @media (max-width: 1440px) {
                 height: 54px;
+                font-size: 16px;
             }
         }
 
@@ -310,17 +307,21 @@
             &:before {
                 content: "";
                 position: absolute;
-                top: -60px;
+                top: -40px;
                 bottom: 0;
             }
 
             &:after {
                 position: absolute;
-                top: -40px;
+                top: -30px;
                 left: 50%;
                 transform: translateX(-50%);
                 font-size: 20px;
                 font-weight: 700;
+
+                @media (max-width:1440px) {
+                    font-size: 16px;
+                }
             }
 
             &:first-child {
@@ -386,6 +387,12 @@
     &+.moveable-control-box {
         display: none !important;
     }
+}
+
+.scroller_right {
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 textarea {
@@ -457,6 +464,10 @@ textarea {
 
     input {
         font-family: "Playwrite AR", cursive;
+
+        @media (max-width:1440px) {
+            font-size: 15px;
+        }
     }
 
     span {
@@ -464,6 +475,11 @@ textarea {
         font-size: 20px;
         font-weight: 900;
         text-align: left;
+
+        @media (max-width:1440px) {
+            min-width: 38px;
+            font-size: 16px;
+        }
 
         &.colorChange {
             height: 20px;
@@ -511,6 +527,12 @@ textarea {
     min-width: 105px;
     width: 105px;
 
+    @media (max-width: 1440px) {
+        padding-right: 0;
+        min-width: 95px;
+        width: 95px;
+    }
+
     ul {
         display: flex;
         flex-wrap: wrap;
@@ -520,11 +542,19 @@ textarea {
             padding: 0;
             margin-bottom: 10px;
             width: 50%;
+
+            @media (max-width:1440px) {
+                margin-bottom: 5px;
+            }
         }
     }
 
     p {
         margin-bottom: 12px;
+
+        @media (max-width:1440px) {
+            margin-bottom: 5px;
+        }
     }
 }
 
@@ -534,6 +564,16 @@ textarea {
 
     p {
         margin-bottom: 10px;
+
+        @media (max-width:1440px) {
+            margin-bottom: 5px;
+        }
+
+        .noneLaptop {
+            @media (max-width: 1440px) {
+                display: none;
+            }
+        }
     }
 
     ul {
@@ -551,7 +591,8 @@ textarea {
                 color: #4e2c19;
 
                 @media (max-width: 1440px) {
-                    font-size: 20px;
+                    font-size: 16px;
+                    font-weight: 700;
                 }
             }
 
@@ -637,8 +678,8 @@ textarea {
                 font-size: 15px;
 
                 @media (max-width: 1440px) {
-                    font-size: 14px;
-                    padding: 5px 15px;
+                    font-size: 13px;
+                    padding: 5px 10px;
                 }
 
                 &:hover {
