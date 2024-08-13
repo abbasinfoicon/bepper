@@ -45,6 +45,8 @@ const WhiteBoard = () => {
                     collaborators: new Map(),
                 });
             }
+
+            console.log("collaborators:", collaborators);
         }
     }, [isCollaborating, excalidrawAPI]);
 
@@ -52,9 +54,12 @@ const WhiteBoard = () => {
         return null; // Prevent rendering on the server
     }
 
+    console.log("excalidrawAPI:", excalidrawAPI)
+    console.log("isCollaborating:", isCollaborating)
+
     return (
         <div style={{ height: 'calc(100vh - 50px)' }}>
-            <label style={{ fontSize: "16px", fontWeight: "bold" }}>
+            <label className="checkbox-collaborators">
                 <input
                     type="checkbox"
                     checked={isCollaborating}
