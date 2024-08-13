@@ -1,6 +1,9 @@
 'use client'
+import dynamic from 'next/dynamic';
 import React from 'react';
-import { Excalidraw } from "@excalidraw/excalidraw";
+
+// Dynamically import Excalidraw with SSR disabled
+const Excalidraw = dynamic(() => import('@excalidraw/excalidraw'), { ssr: false });
 
 const WhiteBoard = () => {
     const UIOptions = {
