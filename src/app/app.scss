@@ -14,7 +14,7 @@ body {
     @include fontfamily(opensans);
     font-size: 16px;
     background-color: $body;
-    // user-select: none;
+    user-select: none;
 
     @media (max-width: 991px) {
         font-size: 15px;

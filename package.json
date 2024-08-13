@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@excalidraw/excalidraw": "^0.17.6",
     "bootstrap": "^5.3.3",
     "fabric": "^6.1.0",
     "html2canvas": "^1.4.1",
