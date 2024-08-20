@@ -57,6 +57,8 @@ const generateCircles = (src, count) => (
 
 const MainScreen = ({ getImage, refScreen }) => {
     const [view, setView] = useState(initialCircleState);
+    const [open, setOpen] = useState(false);
+    const [path, setPath] = useState("");
     const [textarea, setTextarea] = useState('');
     const textareaRef = useRef(null);
     const [color, setColor] = useState('gem_groen');
@@ -79,8 +81,9 @@ const MainScreen = ({ getImage, refScreen }) => {
         setInputData({ ...inputData, [e.target.name]: e.target.value });
     };
 
-    const handleShow = () => {
-        document.getElementById('modalInfo').classList.add("show");
+    const handleShow = (selectedPath) => {
+        setPath(selectedPath);
+        setOpen(true);
     };
 
     const handleViewChange = (viewType) => {
@@ -161,22 +164,46 @@ const MainScreen = ({ getImage, refScreen }) => {
                                 </div>
 
                                 <div className="col-lg-5 scroller_right">
-                                    <div className="">
+                                    <div className="right-flex-custom">
                                         <div className="header-top">
                                             <div className="row items-center">
-                                                <div className="col-md-10">
+                                                <div className="col-md-12">
                                                     <div className="typeText">
-                                                        <div className="textEditor"><span>M:</span> <input type="text" name="m" value={inputData.m} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                        <div className="textEditor"><span>A:</span> <input type="text" name="a" value={inputData.a} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                        <div className={`textEditor ${view.taBoard ? 'd-none' : ''}`}><span>W 1:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w1" value={inputData.w1} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                        <div className={`textEditor ${view.taBoard ? 'd-none' : ''}`}><span>W 2:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w2" value={inputData.w2} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                        <div className={`textEditor ${view.meTime || view.taBoard ? 'd-none' : ''}`}><span>W 3:</span><span className={`colorChange ${color}`}></span> <input type="text" name="w3" value={inputData.w3} onChange={handleInput} id="" placeholder="Type here" /></div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="col-md-2 text-right">
-                                                    <div className="logo">
-                                                        <Link href='/' ><img src="/img/logo.png" alt="" className="img-fluid m-auto" /></Link>
+                                                        <div className="textEditor">
+                                                            <span>M:</span>
+                                                            <div className="cutomInput">
+                                                                <input type="text" name="m" value={inputData.m} onChange={handleInput} id="" placeholder="Type here" />
+                                                                <input type="text" name="m" id="" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="textEditor">
+                                                            <span>A:</span>
+                                                            <div className="cutomInput">
+                                                                <input type="text" name="a" value={inputData.a} onChange={handleInput} id="" placeholder="Type here" />
+                                                                <input type="text" name="a" id="" />
+                                                            </div>
+                                                        </div>
+                                                        <div className={`textEditor ${view.taBoard ? 'd-none' : ''}`}>
+                                                            <span>W 1:</span><span className={`colorChange ${color}`}></span>
+                                                            <div className="cutomInput">
+                                                                <input type="text" name="w1" value={inputData.w1} onChange={handleInput} id="" placeholder="Type here" />
+                                                                <input type="text" name="w1" id="" />
+                                                            </div>
+                                                        </div>
+                                                        <div className={`textEditor ${view.taBoard ? 'd-none' : ''}`}>
+                                                            <span>W 2:</span><span className={`colorChange ${color}`}></span>
+                                                            <div className="cutomInput">
+                                                                <input type="text" name="w2" value={inputData.w2} onChange={handleInput} id="" placeholder="Type here" />
+                                                                <input type="text" name="w2" id="" />
+                                                            </div>
+                                                        </div>
+                                                        <div className={`textEditor ${view.meTime || view.taBoard ? 'd-none' : ''}`}>
+                                                            <span>W 3:</span><span className={`colorChange ${color}`}></span>
+                                                            <div className="cutomInput">
+                                                                <input type="text" name="w3" value={inputData.w3} onChange={handleInput} id="" placeholder="Type here" />
+                                                                <input type="text" name="w3" id="" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -184,23 +211,31 @@ const MainScreen = ({ getImage, refScreen }) => {
 
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <Video />
+                                                <div className="flex gap-2 flex-wrap justify-between">
+                                                    <Video />
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div className="content_fixed">
-                                            <div className="flex">
+                                            <div className="flex flex-wrap justify-between">
                                                 <ColorGem setColor={setColor} setShowGem={setShowGem} />
 
                                                 <div className="bepper-link">
                                                     <p>Select <span className="noneLaptop">&nbsp;Bepper Balance&nbsp;</span> Board</p>
-                                                    <ul>
+                                                    <ul className="d-none">
                                                         {viewTypes.map(({ type, label }) => (
                                                             <li key={type} className={`undo ${view[type] ? 'active' : ''}`}>
                                                                 <button className="flex items-center gap-1" onClick={() => handleViewChange(type)}><GiStarShuriken /> {label}</button>
                                                             </li>
                                                         ))}
                                                     </ul>
+
+                                                    <select name="" id="" className="form-control" onChange={(e) => handleViewChange(e.target.value)}>
+                                                        {viewTypes.map(({ type, label }) => (
+                                                            <option key={type} value={type}>{label}</option>
+                                                        ))}
+                                                    </select>
                                                 </div>
 
                                                 <CustomLink />
@@ -216,15 +251,15 @@ const MainScreen = ({ getImage, refScreen }) => {
                 <div className="sidebar">
                     <div className="sidebar_left">
                         <ul>
-                            <li><Link href='/'><img src="/img/live.png" alt="live" className="img-fluid" /></Link></li>
+                            <li><button onClick={() => handleShow("video")}><img src="/img/live.png" alt="live" className="img-fluid" /></button></li>
                             <li><Link href='/'><img src="/img/microphone.png" alt="microphone" className="img-fluid" /></Link></li>
                             <li><button onClick={getImage}><img src="/img/camera.png" alt="microphone" className="img-fluid" /></button></li>
                         </ul>
-                        <button className='infoicon' onClick={handleShow}><img src="/img/info-white.svg" alt="info" className="img-fluid" /></button>
+                        <button className='infoicon' onClick={() => handleShow("info")}><img src="/img/info-white.svg" alt="info" className="img-fluid" /></button>
                     </div>
                 </div>
 
-                <ModalInfo />
+                <ModalInfo open={open} setOpen={setOpen} path={path} />
             </div>
         </main>
     )

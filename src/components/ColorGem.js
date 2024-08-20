@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import React from 'react'
 
 const colors = [
@@ -32,6 +33,10 @@ const ColorGem = ({ setColor, setShowGem }) => {
                     </li>
                 ))}
             </ul>
+            
+            <div className="logo">
+                <Link href='/' ><img src="/img/logo2.png" alt="" className="img-fluid m-auto" /></Link>
+            </div>
         </div>
     )
 }

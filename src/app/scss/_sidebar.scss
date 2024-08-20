@@ -197,7 +197,11 @@
     .modal-dialog {
         width: 400px;
         margin-top: 5px;
-        margin-left: 45px;
+        margin-left: 15px;
+
+        @media (max-width:1440px) {
+            margin-left: 8px;
+        }
 
         .modal-content {
             border: none;
@@ -205,7 +209,7 @@
             .modal-body {
                 padding: 2rem;
 
-                button {
+                button.close {
                     background: transparent;
                     border: none;
                     outline: none;
@@ -250,6 +254,36 @@
                     }
                 }
 
+                .join_team {
+                    position: relative;
+
+                    input {}
+
+                    button {
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                        width: auto;
+                        background: #94b237;
+                        color: #fff;
+                        border: 1px solid #94b237;
+
+                        &:hover {
+                            background: #594032;
+                            border-color: #594032;
+                        }
+                    }
+                }
+
+                .create_meeting {
+                    font-size: 14px;
+                    margin-top: 5px;
+                    text-decoration: underline;
+                    outline: none;
+                    box-shadow: none;
+                    display: block;
+                    border: none;
+                }
             }
         }
     }

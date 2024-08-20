@@ -441,12 +441,15 @@ textarea {
     }
 }
 
-.header-top {
-    padding: 10px 0;
+.right-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
 
-    @media (max-width:1440px) {
-        padding: 5px 0 10px;
-    }
+.header-top {
+    padding: 0 10px 10px;
 
     input {
         width: 100%;
@@ -462,9 +465,18 @@ textarea {
 
 .textEditor {
     display: flex;
-    align-items: center;
     gap: 10px;
     width: 100%;
+
+    .cutomInput {
+        width: 100%;
+
+        input:last-child {
+            @media (max-width: 1440px) {
+                display: none;
+            }
+        }
+    }
 
     input {
         font-family: "Playwrite AR", cursive;
@@ -531,24 +543,36 @@ textarea {
     min-width: 105px;
     width: 105px;
 
+    border: none;
+    padding-right: 0;
+    min-width: 100%;
+    width: 100%;
+    margin-bottom: 15px;
+    position: relative;
+
     @media (max-width: 1440px) {
         padding-right: 0;
-        min-width: 95px;
-        width: 95px;
+        margin-bottom: 10px;
+        // min-width: 95px;
+        // width: 95px;
     }
 
     ul {
         display: flex;
         flex-wrap: wrap;
         flex-direction: row;
+        justify-content: flex-start;
 
         li {
             padding: 0;
             margin-bottom: 10px;
             width: 50%;
+            width: auto;
+            padding: 10px;
 
             @media (max-width:1440px) {
                 margin-bottom: 5px;
+                padding: 5px;
             }
         }
     }
@@ -557,7 +581,17 @@ textarea {
         margin-bottom: 12px;
 
         @media (max-width:1440px) {
-            margin-bottom: 5px;
+            margin-bottom: 0;
+        }
+    }
+
+    .logo {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+
+        @media (max-width: 1440px) {
+            width: 100px;
         }
     }
 }
@@ -566,11 +600,15 @@ textarea {
     padding: 0 20px;
     width: 100%;
 
+    padding: 0;
+    width: 49%;
+    margin-bottom: 15px;
+
     p {
-        margin-bottom: 10px;
+        margin-bottom: 5px;
 
         @media (max-width:1440px) {
-            margin-bottom: 5px;
+            margin-bottom: 0;
         }
 
         .noneLaptop {
@@ -603,6 +641,57 @@ textarea {
             &.active {
                 button {
                     color: #ca0000;
+                }
+            }
+        }
+    }
+}
+
+.custom-link {
+    height: auto;
+    width: 49%;
+
+    margin-bottom: 15px;
+
+    p {
+        margin-bottom: 5px;
+
+        @media (max-width:1440px) {
+            margin-bottom: 0;
+        }
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        height: 100%;
+        background: #94b237;
+
+        li {
+            display: block;
+            width: 100%;
+
+            a {
+                color: #ffffff;
+                padding: 5px 25px;
+                line-height: 1.4;
+                text-align: left;
+                font-size: 15px;
+
+                @media (max-width: 1440px) {
+                    font-size: 13px;
+                    padding: 5px 10px;
+                }
+
+                &:hover {
+                    background: #5a4133;
+                }
+            }
+
+            &.active {
+                a {
+                    background: #5a4133;
                 }
             }
         }
@@ -660,46 +749,6 @@ textarea {
     }
 }
 
-.custom-link {
-    height: auto;
-
-    ul {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        height: 100%;
-        background: #94b237;
-
-        li {
-            display: block;
-            width: 100%;
-
-            a {
-                color: #ffffff;
-                padding: 5px 25px;
-                line-height: 1.4;
-                text-align: left;
-                font-size: 15px;
-
-                @media (max-width: 1440px) {
-                    font-size: 13px;
-                    padding: 5px 10px;
-                }
-
-                &:hover {
-                    background: #5a4133;
-                }
-            }
-
-            &.active {
-                a {
-                    background: #5a4133;
-                }
-            }
-        }
-    }
-}
-
 .screen-capture {
     overflow: hidden;
     position: relative;
@@ -724,6 +773,25 @@ textarea {
     border-radius: 100%;
     font-size: 0;
     cursor: grab;
+}
+
+.video {
+    flex: 1 0 100%;
+    /* Default to full width */
+}
+
+/* When there are 2 videos */
+.flex>.video:nth-child(2):nth-last-child(1) {
+    flex: 1 0 49%;
+}
+
+.flex>.video:nth-child(1):nth-last-child(1) {
+    flex: 1 0 49%;
+}
+
+/* When there are 3 or more videos */
+.flex>.video:nth-child(n) {
+    flex: 1 0 33%;
 }
 
 .white_bord {
@@ -904,10 +972,17 @@ textarea {
     font-size: 11px;
     top: 5px;
     right: 25px;
-  }
-  
-  .checkbox-collaborators input {
-      position: relative;
-      top: 2px;
-      left: -5px;
-  }
+}
+
+.checkbox-collaborators input {
+    position: relative;
+    top: 2px;
+    left: -5px;
+}
+
+select.form-control {
+    -webkit-appearance: none;
+    background: url('../../../public/img/select-arrow.png') #fff;
+    background-repeat: no-repeat;
+    background-position: top 13px right 13px;
+}
